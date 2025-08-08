@@ -6,6 +6,7 @@ import nazar.zhanabergenov.shop_monolith.order.dto.OrderDto;
 import nazar.zhanabergenov.shop_monolith.order.entity.Order;
 import nazar.zhanabergenov.shop_monolith.order.entity.OrderItem;
 import nazar.zhanabergenov.shop_monolith.order.exception.NotFoundException;
+import nazar.zhanabergenov.shop_monolith.order.exception.OutOfStockException;
 import nazar.zhanabergenov.shop_monolith.order.mapper.OrderMapper;
 import nazar.zhanabergenov.shop_monolith.order.repository.OrderRepository;
 import nazar.zhanabergenov.shop_monolith.product.entity.Product;
@@ -60,7 +61,7 @@ public class OrderService {
             if (qty <= 0) throw new IllegalArgumentException("Quantity must be > 0 for product " + productId);
 
             int stock = Optional.ofNullable(p.getStockQuantity()).orElse(0);
-            if (stock < qty) throw new NotFoundException("Not enough stock for product " + productId);
+            if (stock < qty) throw new OutOfStockException("Not enough stock for product " + productId);
         }
 
         Order order = new Order();
